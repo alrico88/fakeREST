@@ -192,7 +192,8 @@ export const wordRouter = router({
         tags,
         method: 'GET',
         path: '/word/words',
-        description: '',
+        description:
+          'Returns a string containing a number of space separated random words.',
       },
     })
     .input(

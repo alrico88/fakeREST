@@ -2,6 +2,7 @@ import { faker } from '@faker-js/faker';
 import { z } from 'zod';
 import { publicProcedure, router } from '../trpc';
 import { processedBoolean } from '../../schemas/processedBoolean';
+import { stringArray } from '../../schemas/stringArray';
 
 const tags = ['internet'];
 
@@ -18,7 +19,11 @@ export const internetRouter = router({
       },
     })
     .input(z.void())
-    .output(z.object({ avatar: z.string() }))
+    .output(
+      z.object({
+        avatar: z.string(),
+      })
+    )
     .query(() => ({
       avatar: faker.internet.avatar(),
     })),
@@ -50,7 +55,11 @@ export const internetRouter = router({
           .optional(),
       })
     )
-    .output(z.object({ color: z.string() }))
+    .output(
+      z.object({
+        color: z.string(),
+      })
+    )
     .query(({ input }) => ({
       color: faker.internet.color({
         blueBase: input.blueBase,
@@ -80,7 +89,11 @@ export const internetRouter = router({
           .optional(),
       })
     )
-    .output(z.object({ displayName: z.string() }))
+    .output(
+      z.object({
+        displayName: z.string(),
+      })
+    )
     .query(({ input }) => ({
       displayName: faker.internet.displayName({
         firstName: input.firstName,
@@ -97,7 +110,11 @@ export const internetRouter = router({
       },
     })
     .input(z.void())
-    .output(z.object({ domainName: z.string() }))
+    .output(
+      z.object({
+        domainName: z.string(),
+      })
+    )
     .query(() => ({
       domainName: faker.internet.domainName(),
     })),
@@ -111,7 +128,11 @@ export const internetRouter = router({
       },
     })
     .input(z.void())
-    .output(z.object({ domainSuffix: z.string() }))
+    .output(
+      z.object({
+        domainSuffix: z.string(),
+      })
+    )
     .query(() => ({
       domainSuffix: faker.internet.domainSuffix(),
     })),
@@ -125,7 +146,11 @@ export const internetRouter = router({
       },
     })
     .input(z.void())
-    .output(z.object({ domainWord: z.string() }))
+    .output(
+      z.object({
+        domainWord: z.string(),
+      })
+    )
     .query(() => ({
       domainWord: faker.internet.domainWord(),
     })),
@@ -162,7 +187,11 @@ export const internetRouter = router({
           .optional(),
       })
     )
-    .output(z.object({ email: z.string() }))
+    .output(
+      z.object({
+        email: z.string(),
+      })
+    )
     .query(({ input }) => ({
       email: faker.internet.email({
         allowSpecialCharacters: input.allowSpecialCharacters,
@@ -180,15 +209,12 @@ export const internetRouter = router({
         description: 'Generates a random emoji.',
       },
     })
-    .input(
+    .input(z.void())
+    .output(
       z.object({
-        types: z
-          .string()
-          .describe("'A list of the emoji types that should be used.'")
-          .optional(),
+        emoji: z.string(),
       })
     )
-    .output(z.object({ emoji: z.string() }))
     .query(() => ({
       emoji: faker.internet.emoji(),
     })),
@@ -219,7 +245,11 @@ export const internetRouter = router({
           .optional(),
       })
     )
-    .output(z.object({ exampleEmail: z.string() }))
+    .output(
+      z.object({
+        exampleEmail: z.string(),
+      })
+    )
     .query(({ input }) => ({
       exampleEmail: faker.internet.exampleEmail({
         allowSpecialCharacters: input.allowSpecialCharacters,
@@ -256,16 +286,22 @@ export const internetRouter = router({
     })
     .input(
       z.object({
-        types: z
-          .preprocess((val) => String(val).split(','), z.string())
-          .describe('A list of the HTTP status code types that should be used.')
-          .optional()
-          .default([]),
+        types: stringArray
+          .describe(
+            "A list of the HTTP status code types that should be used. Ex.: ['success', 'serverError']"
+          )
+          .optional(),
       })
     )
-    .output(z.object({ httpStatusCode: z.number() }))
-    .query(() => ({
-      httpStatusCode: faker.internet.httpStatusCode(),
+    .output(
+      z.object({
+        httpStatusCode: z.number(),
+      })
+    )
+    .query(({ input }) => ({
+      httpStatusCode: faker.internet.httpStatusCode({
+        types: input.types as any[],
+      }),
     })),
   getIp: publicProcedure
     .meta({
@@ -277,7 +313,11 @@ export const internetRouter = router({
       },
     })
     .input(z.void())
-    .output(z.object({ ip: z.string() }))
+    .output(
+      z.object({
+        ip: z.string(),
+      })
+    )
     .query(() => ({
       ip: faker.internet.ip(),
     })),
@@ -291,7 +331,11 @@ export const internetRouter = router({
       },
     })
     .input(z.void())
-    .output(z.object({ ipv4: z.string() }))
+    .output(
+      z.object({
+        ipv4: z.string(),
+      })
+    )
     .query(() => ({
       ipv4: faker.internet.ipv4(),
     })),
@@ -305,7 +349,11 @@ export const internetRouter = router({
       },
     })
     .input(z.void())
-    .output(z.object({ ipv6: z.string() }))
+    .output(
+      z.object({
+        ipv6: z.string(),
+      })
+    )
     .query(() => ({
       ipv6: faker.internet.ipv6(),
     })),
@@ -329,7 +377,11 @@ export const internetRouter = router({
           .optional(),
       })
     )
-    .output(z.object({ mac: z.string() }))
+    .output(
+      z.object({
+        mac: z.string(),
+      })
+    )
     .query(({ input }) => ({
       mac: faker.internet.mac({
         separator: input.separator,
@@ -370,7 +422,11 @@ export const internetRouter = router({
           .optional(),
       })
     )
-    .output(z.object({ password: z.string() }))
+    .output(
+      z.object({
+        password: z.string(),
+      })
+    )
     .query(({ input }) => ({
       password: faker.internet.password({
         length: input.length,
@@ -389,7 +445,11 @@ export const internetRouter = router({
       },
     })
     .input(z.void())
-    .output(z.object({ port: z.number() }))
+    .output(
+      z.object({
+        port: z.number(),
+      })
+    )
     .query(() => ({
       port: faker.internet.port(),
     })),
@@ -403,7 +463,11 @@ export const internetRouter = router({
       },
     })
     .input(z.void())
-    .output(z.object({ protocol: z.enum(['http', 'https']) }))
+    .output(
+      z.object({
+        protocol: z.enum(['http', 'https']),
+      })
+    )
     .query(() => ({
       protocol: faker.internet.protocol(),
     })),
@@ -428,7 +492,11 @@ export const internetRouter = router({
           .default('https'),
       })
     )
-    .output(z.object({ url: z.string() }))
+    .output(
+      z.object({
+        url: z.string(),
+      })
+    )
     .query(({ input }) => ({
       url: faker.internet.url({
         appendSlash: input.appendSlash,
@@ -445,7 +513,11 @@ export const internetRouter = router({
       },
     })
     .input(z.void())
-    .output(z.object({ userAgent: z.string() }))
+    .output(
+      z.object({
+        userAgent: z.string(),
+      })
+    )
     .query(() => ({
       userAgent: faker.internet.userAgent(),
     })),
@@ -471,7 +543,11 @@ export const internetRouter = router({
           .optional(),
       })
     )
-    .output(z.object({ userName: z.string() }))
+    .output(
+      z.object({
+        userName: z.string(),
+      })
+    )
     .query(({ input }) => ({
       userName: faker.internet.userName({
         firstName: input.firstName,

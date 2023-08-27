@@ -147,6 +147,7 @@ export const airlineRouter = router({
       z.object({
         allowNumerics: processedBoolean
           .describe('Whether to allow numeric characters.')
+          .default(true)
           .optional(),
         allowVisuallySimilarCharacters: processedBoolean
           .describe(
@@ -183,7 +184,7 @@ export const airlineRouter = router({
     )
     .output(
       z.object({
-        seat: z.string().optional(),
+        seat: z.string(),
       })
     )
     .query(({ input }) => ({

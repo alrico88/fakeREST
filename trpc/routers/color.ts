@@ -135,6 +135,7 @@ export const colorRouter = router({
           .optional(),
         includeAlpha: processedBoolean
           .describe('Adds an alpha value to the color (RGBA).')
+          .default(false)
           .optional(),
       })
     )
@@ -179,8 +180,8 @@ export const colorRouter = router({
     .input(
       z.object({
         format: ColorFormatEnum.describe('Format of generated HWB color.')
-          .optional()
-          .default('decimal'),
+          .default('decimal')
+          .optional(),
       })
     )
     .output(
@@ -232,8 +233,8 @@ export const colorRouter = router({
     .input(
       z.object({
         format: ColorFormatEnum.describe('Format of generated LAB color.')
-          .optional()
-          .default('decimal'),
+          .default('decimal')
+          .optional(),
       })
     )
     .output(

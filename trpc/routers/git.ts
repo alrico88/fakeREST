@@ -131,7 +131,9 @@ export const gitRouter = router({
         commitSha: z.string(),
       })
     )
-    .query(() => ({
-      commitSha: faker.git.commitSha(),
+    .query(({ input }) => ({
+      commitSha: faker.git.commitSha({
+        length: input.length,
+      }),
     })),
 });

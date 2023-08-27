@@ -2,6 +2,7 @@ import { faker } from '@faker-js/faker';
 import { z } from 'zod';
 import { publicProcedure, router } from '../trpc';
 import { processedBoolean } from '../../schemas/processedBoolean';
+import { stringArray } from '../../schemas/stringArray';
 
 const tags = ['string'];
 
@@ -13,8 +14,7 @@ const casingSchema = z
 
 const alphaSchema = z.object({
   casing: casingSchema,
-  exclude: z
-    .preprocess((val) => String(val).split(','), z.string())
+  exclude: stringArray
     .describe(
       'An array with characters which should be excluded in the generated string.'
     )
@@ -121,16 +121,14 @@ export const stringRouter = router({
     })
     .input(
       z.object({
-        characters: z
-          .preprocess((val) => String(val).split(','), z.string())
-          .describe(
-            'The characters to use for the string. Can be a string or an array of characters. If it is an array, then each element is treated as a single character even if it is a string with multiple characters.'
-          ),
+        characters: stringArray.describe(
+          'The characters to use for the string. Can be a string or an array of characters. If it is an array, then each element is treated as a single character even if it is a string with multiple characters.'
+        ),
         length: z
           .number()
           .describe('The length of the string to generate.')
-          .optional()
-          .default(1),
+          .default(1)
+          .optional(),
       })
     )
     .output(
@@ -196,8 +194,8 @@ export const stringRouter = router({
         length: z
           .number()
           .describe('Length of the generated string.')
-          .optional()
-          .default(21),
+          .default(21)
+          .optional(),
       })
     )
     .output(
@@ -222,8 +220,7 @@ export const stringRouter = router({
         allowLeadingZeros: processedBoolean
           .describe('Whether leading zeros are allowed or not.')
           .optional(),
-        exclude: z
-          .preprocess((val) => String(val).split(','), z.string())
+        exclude: stringArray
           .describe(
             'An array of digits which should be excluded in the generated string.'
           )
@@ -299,8 +296,8 @@ export const stringRouter = router({
         length: z
           .number()
           .describe('Length of the generated string. Max length is 2^20.')
-          .optional()
-          .default(10),
+          .default(10)
+          .optional(),
       })
     )
     .output(

@@ -212,8 +212,10 @@ export const financeRouter = router({
         creditCardNumber: z.string(),
       })
     )
-    .query(() => ({
-      creditCardNumber: faker.finance.creditCardNumber(),
+    .query(({ input }) => ({
+      creditCardNumber: faker.finance.creditCardNumber({
+        issuer: input.issuer,
+      }),
     })),
   getCurrency: publicProcedure
     .meta({
@@ -221,7 +223,8 @@ export const financeRouter = router({
         tags,
         method: 'GET',
         path: '/finance/currency',
-        description: '',
+        description:
+          'Returns a random currency object, containing code, name and symbol properties.',
       },
     })
     .input(z.void())
@@ -322,7 +325,8 @@ export const financeRouter = router({
     .input(
       z.object({
         countryCode: z
-          .preprocess((val) => String(val).toUpperCase(), z.string())
+          .string()
+          .transform((val) => val.toUpperCase())
           .describe(
             'The country code from which you want to generate an IBAN, if none is provided a random country will be used.'
           )
@@ -413,8 +417,8 @@ export const financeRouter = router({
         length: z
           .number()
           .describe('The length of the PIN to generate.')
-          .optional()
-          .default(4),
+          .default(4)
+          .optional(),
       })
     )
     .output(

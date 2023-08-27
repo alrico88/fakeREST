@@ -12,9 +12,9 @@ function getCoordSchema(
 ): z.ZodDefault<z.ZodOptional<z.ZodNumber>> {
   return z
     .number()
+    .describe(description)
     .min(-bound)
     .max(bound)
-    .describe(description)
     .optional()
     .default(defaultVal);
 }
@@ -168,6 +168,7 @@ export const locationRouter = router({
           .describe(
             'If true this will return abbreviated directions (NW, E, etc). Otherwise this will return the long name.'
           )
+          .default(false)
           .optional(),
       })
     )
@@ -207,8 +208,8 @@ export const locationRouter = router({
           .describe(
             'The number of decimal points of precision for the latitude.'
           )
-          .optional()
-          .default(4),
+          .default(4)
+          .optional(),
       })
     )
     .output(
@@ -383,6 +384,7 @@ export const locationRouter = router({
           .describe(
             'If true this will return abbreviated first-level administrative entity names. Otherwise this will return the long name.'
           )
+          .default(false)
           .optional(),
       })
     )
@@ -391,8 +393,10 @@ export const locationRouter = router({
         state: z.string(),
       })
     )
-    .query(() => ({
-      state: faker.location.state(),
+    .query(({ input }) => ({
+      state: faker.location.state({
+        abbreviated: input.abbreviated,
+      }),
     })),
   getStreet: publicProcedure
     .meta({
@@ -427,6 +431,7 @@ export const locationRouter = router({
           .describe(
             'When true this will generate a full address. Otherwise it will just generate a street address.'
           )
+          .default(false)
           .optional(),
       })
     )
@@ -435,8 +440,10 @@ export const locationRouter = router({
         streetAddress: z.string(),
       })
     )
-    .query(() => ({
-      streetAddress: faker.location.streetAddress(),
+    .query(({ input }) => ({
+      streetAddress: faker.location.streetAddress({
+        useFullAddress: input.useFullAddress
+      }),
     })),
   getTimeZone: publicProcedure
     .meta({

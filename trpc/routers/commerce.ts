@@ -53,8 +53,13 @@ export const commerceRouter = router({
         price: z.string(),
       })
     )
-    .query(() => ({
-      price: faker.commerce.price(),
+    .query(({ input }) => ({
+      price: faker.commerce.price({
+        dec: input.dec,
+        min: input.min,
+        max: input.max,
+        symbol: input.symbol,
+      }),
     })),
   getProduct: publicProcedure
     .meta({

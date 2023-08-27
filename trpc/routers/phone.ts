@@ -2,11 +2,13 @@ import { faker } from '@faker-js/faker';
 import { z } from 'zod';
 import { publicProcedure, router } from '../trpc';
 
+const tags = ['phone'];
+
 export const phoneRouter = router({
   getImei: publicProcedure
     .meta({
       openapi: {
-        tags: ['phone'],
+        tags,
         method: 'GET',
         path: '/phone/imei',
         description: 'Generates IMEI number.',
@@ -24,7 +26,7 @@ export const phoneRouter = router({
   getNumber: publicProcedure
     .meta({
       openapi: {
-        tags: ['phone'],
+        tags,
         method: 'GET',
         path: '/phone/number',
         description: 'Generates a random phone number.',

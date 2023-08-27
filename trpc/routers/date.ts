@@ -185,7 +185,10 @@ export const dateRouter = router({
     })
     .input(
       z.object({
-        abbreviated: processedBoolean.describe('').default(false).optional(),
+        abbreviated: processedBoolean
+          .describe('Whether to return an abbreviation.')
+          .default(false)
+          .optional(),
         context: processedBoolean
           .describe(
             'Whether to return the name of a month in the context of a date'
